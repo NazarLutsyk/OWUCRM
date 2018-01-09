@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "application".
@@ -29,6 +30,7 @@ use Yii;
  */
 class Application extends \yii\db\ActiveRecord
 {
+
     public function init()
     {
         $this->discount = 0;
@@ -54,7 +56,7 @@ class Application extends \yii\db\ActiveRecord
     {
         return [
             [['appReciveDate', 'appCloseDate', 'client_id', 'course_id'], 'required'],
-            [['discount'],'integer', 'min' => 0, 'max' => 100],
+            [['discount'], 'integer', 'min' => 0, 'max' => 100],
             [['appReciveDate', 'appCloseDate'], 'safe'],
             [['checked', 'paid', 'leftToPay', 'social_id', 'client_id', 'course_id'], 'integer'],
             [['commentFromClient', 'commentFromManager', 'tagsAboutApplication', 'futureCourse'], 'string', 'max' => 255],
@@ -119,23 +121,45 @@ class Application extends \yii\db\ActiveRecord
         return $this->hasMany(Payment::className(), ['application_id' => 'id']);
     }
 
-    public function getClientName(){
+    public function getClientName()
+    {
         return $this->client->name;
     }
 
-    public function getClientSurname(){
+    public function getClientSurname()
+    {
         return $this->client->surname;
     }
 
-    public function getCourseName(){
+    public function getCourseName()
+    {
         return $this->course->name;
     }
 
-    public function getSocialName(){
+    public function getSocialName()
+    {
         return $this->social->name;
     }
 
-    public function getApplicationName(){
-        return $this->client->getFullname().'('.$this->course->name.')';
+    public function getApplicationName()
+    {
+        return $this->client->getFullname() . '(' . $this->course->name . ')';
+    }
+
+    public static function getSocialStatisticByPeriod($startDate, $endDate, $socials)
+    {
+        if (!$startDate)
+            $startDate = '1970/01/01';
+        if (!$endDate)
+            $endDate = '3000/01/01';
+        if (sizeof($socials) <= 0)
+            $socials = ArrayHelper::getColumn(Social::find()->select('id')->asArray()->all(), 'id');
+        return Application::find()
+            ->select('s.name,count(s.id) as count')
+            ->innerJoin('social s', 'application.social_id = s.id')
+            ->where('appReciveDate >=:startDate', ['startDate' => $startDate])
+            ->andWhere('appReciveDate <=:endDate', ['endDate' => $endDate])
+            ->andWhere(['in', 's.id', $socials])
+            ->groupBy('s.name');
     }
 }

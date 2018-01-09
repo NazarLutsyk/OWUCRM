@@ -35,6 +35,7 @@ use yii\widgets\ActiveForm;
         [
             'prompt' => 'Select...',
             $model->course_id => ['selected' => true],
+            'class' => 'js-example-basic-single'
         ]) ?>
 
     <div class="form-group">

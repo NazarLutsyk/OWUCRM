@@ -102,4 +102,24 @@ class Client extends \yii\db\ActiveRecord
     {
         return $this->name . " " . $this->surname;
     }
+
+    public static function findClientsWitchNotFromGroupAndWithApp($groupId)
+    {
+        $group = Group::find()->where('id=:id', ['id' => $groupId])->one();
+        $clientsWithApp = Client::find()
+            ->select('client.id')
+            ->innerJoin('application a', 'client.id=a.client_id')
+            ->innerJoin("course c", 'a.course_id=c.id')
+            ->where('c.id=:cid', ['cid' => $group->course_id]);
+        $clientsInGroup = Client::find()
+            ->select('client.id')
+            ->innerJoin("client_group cg", 'client.id=cg.client_id')
+            ->innerJoin("group g", 'cg.group_id=g.id')
+            ->innerJoin("course c", 'g.course_id = c.id')
+            ->where('c.id=:cid', ['cid' => $group->course_id]);
+        $clients = Client::find()
+            ->where(['in', 'id', $clientsWithApp])
+            ->andWhere(['not in', 'id', $clientsInGroup]);
+        return $clients;
+    }
 }

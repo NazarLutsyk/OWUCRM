@@ -2,9 +2,13 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\Application;
+use app\models\Group;
 use Yii;
 use app\models\Client;
 use app\models\ClientSearch;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -53,8 +57,20 @@ class ClientController extends Controller
      */
     public function actionView($id)
     {
+        $client = $this->findModel($id);
+        $appDataProvider = new ArrayDataProvider([
+            'allModels' => $client->applications
+        ]);
+        $groupDataProvider = new ArrayDataProvider([
+            'allModels' => Group::find()
+                ->innerJoin("client_group",'group.id=client_group.group_id')
+                ->innerJoin("client",'client_group.client_id=client.id')
+                ->where("client_id=:id", array(':id' => $id))->all()
+        ]);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $client,
+            'applications' => $appDataProvider,
+            'groups' => $groupDataProvider,
         ]);
     }
 

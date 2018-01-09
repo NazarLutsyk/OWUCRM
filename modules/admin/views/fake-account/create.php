@@ -7,7 +7,8 @@ use yii\helpers\Html;
 /* @var $model app\models\FakeAccount */
 
 $this->title = 'Create Fake Account';
-$this->params['breadcrumbs'][] = ['label' => 'Fake Accounts', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Fake Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $fakeUserName, 'url' => ['/admin/fake-user/view', 'id' => $user_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="fake-account-create">
@@ -16,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'fakeUsers' => $fakeUsers
+        'user_id' => $user_id,
     ]) ?>
 
 </div>

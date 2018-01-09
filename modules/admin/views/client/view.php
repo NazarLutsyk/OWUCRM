@@ -1,6 +1,7 @@
 <?php
 
 use app\controllers\MyHelper;
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -60,5 +61,84 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]) ?>
+
+    <?php if ($applications->count > 0): ?>
+        <?= GridView::widget([
+            'dataProvider' => $applications,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                'id',
+                [
+                    'attribute' => 'coursename',
+                    'label' => 'Course'
+                ],
+                'appReciveDate',
+                'discount',
+                'paid',
+                'leftToPay',
+                'appCloseDate',
+                //'commentFromClient',
+                //'commentFromManager',
+                //'tagsAboutApplication',
+                //'futureCourse',
+                [
+                    'attribute' => 'socialname',
+                    'label' => 'Social'
+                ],
+                'checked',
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            $url = \yii\helpers\Url::toRoute(['/admin/application/view', 'id' => $model->id]);
+                            return Html::a('SHOW', $url,
+                                [
+                                    'title' => Yii::t('yii', 'View'),
+                                    'class' => 'btn btn-primary btn-xs'
+                                ]);
+                        },
+                    ]
+                ],
+            ],
+        ]); ?>
+    <?php endif; ?>
+
+    <?php if ($groups->count > 0): ?>
+    <?= GridView::widget([
+        'dataProvider' => $groups,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'id',
+            'name',
+            'room',
+            'startDate',
+            [
+                'label' => 'Course',
+                'attribute' => 'coursename',
+                'value' => function ($model) {
+                    return Html::a($model->course->name,
+                        ['/admin/course/view', 'id' => $model->course_id]
+                    );
+                },
+                'format' => 'html'
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                        $url = \yii\helpers\Url::toRoute(['/admin/group/view', 'id' => $model->id]);
+                        return Html::a('SHOW', $url,
+                            [
+                                'title' => Yii::t('yii', 'View'),
+                                'class' => 'btn btn-primary btn-xs'
+                            ]);
+                    },
+                ]
+            ],
+        ],
+    ]); ?>
+    <?php endif; ?>
 
 </div>

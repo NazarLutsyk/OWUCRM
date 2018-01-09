@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = 'Add clients';
     <form class="form" method="POST">
         <div class="form-group">
             <input type="hidden" name="id" value="<?=$model->id?>">
-            <?=Html::dropDownList("clients",$clients,$clients,['multiple'=>true])?>
+            <?=Html::dropDownList("clients",$clients,$clients,['multiple'=>true, 'class' => 'js-example-basic-single'
+            ])?>
             <input type="hidden" name="_csrf" value="<?=Yii::$app->request->csrfToken?>">
         </div>
         <div>

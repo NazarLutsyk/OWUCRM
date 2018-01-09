@@ -2,6 +2,8 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\Social;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 
 /**
@@ -16,5 +18,13 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionAnalitics()
+    {
+        return $this->render('analitics',
+            [
+                'socials' => ArrayHelper::map(Social::find()->all(),'id','name')
+            ]);
     }
 }

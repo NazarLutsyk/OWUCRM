@@ -58,12 +58,12 @@ class GroupController extends Controller
      */
     public function actionView($id)
     {
-        $clientDataProvider = new ActiveDataProvider([
-            'query' => Client::find()
-                ->innerJoin("client_group",'client.id=client_group.client_id')
-                ->innerJoin("group",'client_group.group_id=group.id')
-                ->where("group_id=:id", array(':id' => $id))
-        ]);
+            $clientDataProvider = new ActiveDataProvider([
+                'query' => Client::find()
+                    ->innerJoin("client_group",'client.id=client_group.client_id')
+                    ->innerJoin("group",'client_group.group_id=group.id')
+                    ->where("group_id=:id", array(':id' => $id))
+            ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
             'clients' => $clientDataProvider
@@ -129,7 +129,7 @@ class GroupController extends Controller
     public function actionAdd()
     {
         if (Yii::$app->request->isGet) {
-            $clientsRecords = Client::find()->select(['id', 'name', 'surname'])->all();
+            $clientsRecords = Client::findClientsWitchNotFromGroupAndWithApp(Yii::$app->request->get('id'))->all();
             $clients = ArrayHelper::map($clientsRecords, 'id', 'fullname');
             return $this->render("addClients", [
                 'model' => $this->findModel(Yii::$app->request->get('id')),

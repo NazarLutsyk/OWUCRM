@@ -45,7 +45,8 @@ AppAsset::register($this);
             ['label' => 'Courses', 'url' => ['/admin/course/index']],
             ['label' => 'Socials', 'url' => ['/admin/social/index']],
             ['label' => 'FakeUsers', 'url' => ['/admin/fake-user/index']],
-            ['label' => 'FakeAccounts', 'url' => ['/admin/fake-account/index']],
+            ['label' => 'Analitic', 'url' => ['/admin/default/analitics']],
+//            ['label' => 'FakeAccounts', 'url' => ['/admin/fake-account/index']],
             Yii::$app->user->isGuest ? (
             ['label' => 'Login', 'url' => ['/site/login']]
             ) : (

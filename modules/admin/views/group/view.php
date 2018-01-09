@@ -39,28 +39,36 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <?php if ($clients->count > 0): ?>
-    <?= GridView::widget([
-        'dataProvider' => $clients,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        <?= GridView::widget([
+            'dataProvider' => $clients,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'name',
-            'surname',
-            'email:email',
-            'phone',
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{myButton}',
-                'buttons' => [
-                    'myButton' => function ($url, $client, $key) use ($model) {
-                        return Html::a("DELETE",
-                            \yii\helpers\Url::to(['/admin/group/expel', 'client_id' =>$client->id,'group_id'=>$model->id]),
-                            ['class' => 'btn btn-danger btn-xs']);
-                    }
-                ]
-            ]
-        ],
-    ]); ?>
-    <?php endif;?>
+                'id',
+                'name',
+                'surname',
+                'email:email',
+                'phone',
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}{myButton}',
+                    'buttons' => [
+                        'myButton' => function ($url, $client, $key) use ($model) {
+                            return Html::a("DELETE",
+                                \yii\helpers\Url::to(['/admin/group/expel', 'client_id' => $client->id, 'group_id' => $model->id]),
+                                ['class' => 'btn btn-danger btn-xs']);
+                        },
+                        'view' => function ($url, $model) {
+                            $url = \yii\helpers\Url::toRoute(['/admin/client/view', 'id' => $model->id]);
+                            return Html::a('SHOW', $url,
+                                [
+                                    'title' => Yii::t('yii', 'Create'),
+                                    'class' => 'btn btn-primary btn-xs'
+                                ]);
+                        },
+                    ]
+                ],
+            ],
+        ]); ?>
+    <?php endif; ?>
 </div>

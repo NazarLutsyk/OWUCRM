@@ -13,8 +13,10 @@ $this->params['breadcrumbs'][] = ['label' => 'Applications', 'url' => ['index']]
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="application-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>
+        <?=Html::a($model->client->getFullname(),['/admin/client/view','id'=>$model->client_id])?>
+        <?='(' . $model->course->name . ')'?>
+    </h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

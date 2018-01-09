@@ -7,8 +7,9 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\FakeAccount */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Fake Accounts', 'url' => ['index']];
+$this->title = $model->login;
+$this->params['breadcrumbs'][] = ['label' => 'Fake Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->fakeUser->getFullName(), 'url' => ['/admin/fake-user/view','id'=>$model->fakeUser_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="fake-account-view">

@@ -1,5 +1,6 @@
 <?php
 
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -13,12 +14,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="fake-user-view">
 
     <div>
-        <?= Html::img(Yii::getAlias('@web') . '/' . $model->images, ['height' => '200', 'width' => '150', 'style' => ['float'=>'right']]); ?>
+        <?= Html::img(Yii::getAlias('@web') . '/' . $model->images, ['height' => '200', 'width' => '150', 'style' => ['float' => 'right']]); ?>
         <div>
             <h1><?= Html::encode($this->title) ?></h1>
 
             <p>
                 <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('Create account', ['/admin/fake-account/create', 'user_id' => $model->id], ['class' => 'btn btn-success']) ?>
                 <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',
                     'data' => [
@@ -41,5 +43,52 @@ $this->params['breadcrumbs'][] = $this->title;
             'fakeUserComments',
         ],
     ]) ?>
+
+    <?php if ($fakeaccs->count > 0): ?>
+        <?= GridView::widget([
+            'dataProvider' => $fakeaccs,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+
+                'id',
+                'login',
+                'password',
+                'siteUrl',
+                'registrationDate',
+                //'lastVisitDate',
+                //'fakeAccountComments',
+                //'fakeUser_id',
+
+                ['class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}{update}{delete}',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            $url = \yii\helpers\Url::toRoute(['/admin/fake-account/view', 'id' => $model->fakeUser_id]);
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                'title' => Yii::t('yii', 'Create'),
+                            ]);
+                        },
+                        'update' => function ($url, $model) {
+                            $url = \yii\helpers\Url::toRoute(['/admin/fake-account/update', 'id' => $model->fakeUser_id]);
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                'title' => Yii::t('yii', 'Update'),
+                            ]);
+                        },
+                        'delete' => function ($url, $model) {
+                            $url = \yii\helpers\Url::toRoute(['/admin/fake-account/delete', 'id' => $model->fakeUser_id]);
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                'title' => Yii::t('yii', 'Delete'),
+                                'data' => [
+                                    'confirm' => 'Are you sure you want to delete this item?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        }
+                    ]
+                ]
+            ],
+        ]); ?>
+    <?php endif; ?>
 
 </div>

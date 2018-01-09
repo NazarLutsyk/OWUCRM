@@ -2,9 +2,11 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\FakeAccount;
 use Yii;
 use app\models\FakeUser;
 use app\models\FakeUserSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -52,8 +54,13 @@ class FakeUserController extends Controller
      */
     public function actionView($id)
     {
+        $fakeAccDataProvider = new ActiveDataProvider([
+            'query' => FakeAccount::find()
+                ->where("fakeUser_id=:id", array(':id' => $id))
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'fakeaccs' => $fakeAccDataProvider
         ]);
     }
 

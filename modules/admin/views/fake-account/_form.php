@@ -29,7 +29,7 @@ use yii\widgets\ActiveForm;
             'pluginOptions' => [
                 'format' => 'yyyy-MM-dd HH:mm',
                 'todayHighlight' => true,
-                'autoclose'=>true,
+                'autoclose' => true,
             ]
         ]) ?>
 
@@ -43,17 +43,15 @@ use yii\widgets\ActiveForm;
             'pluginOptions' => [
                 'format' => 'yyyy-MM-dd HH:mm',
                 'todayHighlight' => true,
-                'autoclose'=>true,
+                'autoclose' => true,
             ]
         ]) ?>
 
     <?= $form->field($model, 'fakeAccountComments')->textarea(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'fakeUser_id')->dropDownList($fakeUsers,
-        [
-            'prompt' => 'Select fake user...',
-            $model->fakeUser_id => ['selected' => true],
-        ])->label('Fake User') ?>
+    <div style="display: none">
+        <?= $form->field($model, 'fakeUser_id')->hiddenInput(['value' => $user_id])->label("") ?>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

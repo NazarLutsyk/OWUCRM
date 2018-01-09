@@ -17,12 +17,14 @@ use yii\widgets\ActiveForm;
         [
             'prompt' => 'Select client...',
             $model->client_id => ['selected' => true],
+            'class' => 'js-example-basic-single'
         ])->label('Client')?>
 
     <?= $form->field($model, 'course_id')->dropDownList($courses,
         [
             'prompt' => 'Select course...',
             $model->course_id => ['selected' => true],
+            'class' => 'js-example-basic-single'
         ])->label('Course')?>
 
     <?= $form->field($model, 'appReciveDate')->input("datetime")->widget(
@@ -69,6 +71,7 @@ use yii\widgets\ActiveForm;
         [
             'prompt' => 'Select social...',
             $model->social_id => ['selected' => true],
+            'class' => 'js-example-basic-single'
         ])->label('Social')?>
 
     <div class="form-group">
