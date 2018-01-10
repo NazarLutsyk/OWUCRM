@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
         [
             'name' => 'startDate',
             'options' => ['placeholder' => 'Select start date ...'],
-            'type' => DateTimePicker::TYPE_COMPONENT_APPEND,
+            'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
             'convertFormat' => true,
             'pluginOptions' => [
                 'format' => 'yyyy-MM-dd HH:mm',

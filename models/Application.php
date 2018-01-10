@@ -31,13 +31,20 @@ use yii\helpers\ArrayHelper;
 class Application extends \yii\db\ActiveRecord
 {
 
-    public function init()
+    public function beforeSave($insert)
     {
-        $this->discount = 0;
-        $this->paid = 0;
-        $this->leftToPay = 0;
-        $this->checked = 0;
-        parent::init();
+        if (parent::beforeSave($insert)) {
+            if (empty($this->discount))
+                $this->discount = 0;
+            if (empty($this->leftToPay))
+                $this->leftToPay = 0;
+            if (empty($this->paid))
+                $this->paid = 0;
+            if (empty($this->checked))
+                $this->checked = 0;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -155,11 +162,28 @@ class Application extends \yii\db\ActiveRecord
         if (sizeof($socials) <= 0)
             $socials = ArrayHelper::getColumn(Social::find()->select('id')->asArray()->all(), 'id');
         return Application::find()
-            ->select('s.name,count(s.id) as count')
+            ->select('s.name, count(s.id) as count')
             ->innerJoin('social s', 'application.social_id = s.id')
             ->where('appReciveDate >=:startDate', ['startDate' => $startDate])
             ->andWhere('appReciveDate <=:endDate', ['endDate' => $endDate])
             ->andWhere(['in', 's.id', $socials])
             ->groupBy('s.name');
+    }
+
+    public static function getAppStatByCourses($startDate, $endDate, $courses)
+    {
+        if (!$startDate)
+            $startDate = '1970/01/01';
+        if (!$endDate)
+            $endDate = '3000/01/01';
+        if (sizeof($courses) <= 0)
+            $courses = ArrayHelper::getColumn(Course::find()->select('id')->asArray()->all(), 'id');
+        return Application::find()
+            ->select('count(c.id) as count')
+            ->innerJoin('course c', 'application.course_id = c.id')
+            ->where('appReciveDate >=:startDate', ['startDate' => $startDate])
+            ->andWhere('appReciveDate <=:endDate', ['endDate' => $endDate])
+            ->andWhere(['in', 'c.id', $courses])
+            ->groupBy('c.name');
     }
 }

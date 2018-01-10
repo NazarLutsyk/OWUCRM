@@ -7,6 +7,7 @@ use Yii;
 use app\models\FakeUser;
 use app\models\FakeUserSearch;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -117,9 +118,46 @@ class FakeUserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $fakeUser = $this->findModel($id);
+        $fakeUser->deleteImages();
+        $fakeUser->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionImages($id)
+    {
+        return $this->render('images', [
+                'model' => $this->findModel($id)
+            ]
+        );
+    }
+
+    public function actionAddImage()
+    {
+        $id = ArrayHelper::getValue(Yii::$app->request->post('FakeUser'), 'id');
+        $fakeUser = $this->findModel($id);
+        $fakeUser->uploadFile();
+        $fakeUser->save(false);
+        return $this->render('images', [
+                'model' => $this->findModel($id)
+            ]
+        );
+    }
+
+    public function actionDeleteImage()
+    {
+        $id = Yii::$app->request->post('id');
+        $fileName = Yii::$app->request->post('image');
+        $fakeUser = $this->findModel($id);
+        if (unlink($fileName)){
+            $fakeUser->setImagesArr(array_diff($fakeUser->getImagesArr(),[$fileName]));
+            $fakeUser->save(false);
+        }
+        return $this->render('images', [
+                'model' => $this->findModel($id)
+            ]
+        );
     }
 
     /**

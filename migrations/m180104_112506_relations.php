@@ -51,7 +51,7 @@ class m180104_112506_relations extends Migration
             'recomendation_id',
             'client',
             'id',
-            'CASCADE'
+            'SET NULL'
         );
 
         $this->addForeignKey(
@@ -60,7 +60,7 @@ class m180104_112506_relations extends Migration
             'social_id',
             'social',
             'id',
-            'CASCADE'
+            'SET NULL'
         );
 
         $this->addForeignKey(
@@ -78,7 +78,7 @@ class m180104_112506_relations extends Migration
             'course_id',
             'course',
             'id',
-            'CASCADE'
+            'SET NULL'
         );
 
         $this->addForeignKey(
@@ -87,7 +87,7 @@ class m180104_112506_relations extends Migration
             'course_id',
             'course',
             'id',
-            'CASCADE'
+            'SET NULL'
         );
 
         $this->addForeignKey(

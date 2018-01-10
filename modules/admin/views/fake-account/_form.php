@@ -24,7 +24,7 @@ use yii\widgets\ActiveForm;
         [
             'name' => 'registrationDate',
             'options' => ['placeholder' => 'Select registration date ...'],
-            'type' => DateTimePicker::TYPE_COMPONENT_APPEND,
+            'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
             'convertFormat' => true,
             'pluginOptions' => [
                 'format' => 'yyyy-MM-dd HH:mm',
@@ -38,7 +38,7 @@ use yii\widgets\ActiveForm;
         [
             'name' => 'appReciveDate',
             'options' => ['placeholder' => 'Select last visit date ...'],
-            'type' => DateTimePicker::TYPE_COMPONENT_APPEND,
+            'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
             'convertFormat' => true,
             'pluginOptions' => [
                 'format' => 'yyyy-MM-dd HH:mm',

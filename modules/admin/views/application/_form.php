@@ -32,7 +32,7 @@ use yii\widgets\ActiveForm;
         [
             'name' => 'appReciveDate',
             'options' => ['placeholder' => 'Select recive date ...'],
-            'type' => DateTimePicker::TYPE_COMPONENT_APPEND,
+            'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
             'convertFormat' => true,
             'pluginOptions' => [
                 'format' => 'yyyy-MM-dd HH:mm',
@@ -47,7 +47,7 @@ use yii\widgets\ActiveForm;
         [
             'name' => 'startDate',
             'options' => ['placeholder' => 'Select close date ...'],
-            'type' => DateTimePicker::TYPE_COMPONENT_APPEND,
+            'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
             'convertFormat' => true,
             'pluginOptions' => [
                 'format' => 'yyyy-MM-dd HH:mm',

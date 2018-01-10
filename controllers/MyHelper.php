@@ -6,8 +6,10 @@ use function GuzzleHttp\Psr7\str;
 
 class MyHelper
 {
-    public static function calculatePrice($fullPrice, $discount = 0)
+    public static function calculatePrice($fullPrice, $discount)
     {
+        if (empty($discount))
+            $discount = 0;
         return $fullPrice - ($fullPrice * ($discount / 100));
     }
 

@@ -2,7 +2,9 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\Course;
 use app\models\Social;
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 
@@ -24,7 +26,8 @@ class DefaultController extends Controller
     {
         return $this->render('analitics',
             [
-                'socials' => ArrayHelper::map(Social::find()->all(),'id','name')
+                'socials' => ArrayHelper::map(Social::find()->all(),'id','name'),
+                'courses' => ArrayHelper::map(Course::find()->all(),'id','name')
             ]);
     }
 }

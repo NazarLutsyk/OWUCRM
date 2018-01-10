@@ -1,5 +1,6 @@
 <?php
 
+use app\controllers\MyHelper;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -14,13 +15,33 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="fake-user-view">
 
     <div>
-        <?= Html::img(Yii::getAlias('@web') . '/' . $model->images, ['height' => '200', 'width' => '150', 'style' => ['float' => 'right']]); ?>
+        <?
+        if (!empty($model->images)) {
+            foreach ($model->getImagesArr() as $image) {
+                echo Html::img(
+                    Yii::getAlias('@web') . '/' . $image,
+                    [
+                        'height' => '200',
+                        'width' => '150',
+                        'data-toggle' => 'tooltip',
+                        'data-placement' => 'top',
+                        'title' => $image,
+                        'style' =>
+                            [
+                                'float' => 'right'
+                            ]
+                    ]
+                );
+            }
+        }
+        ?>
         <div>
             <h1><?= Html::encode($this->title) ?></h1>
 
             <p>
                 <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a('Create account', ['/admin/fake-account/create', 'user_id' => $model->id], ['class' => 'btn btn-success']) ?>
+                <?= Html::a('Create account', ['/admin/fake-account/create', 'user_id' => $model->id], ['class' => 'btn btn-success']); ?>
+                <?= Html::a('Manage images', ['images', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
                 <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',
                     'data' => [
@@ -39,7 +60,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'surname',
             'phone',
             'email:email',
-            'images',
+            [
+                'attribute' => 'images',
+                'value' => function ($model) {
+                    return MyHelper::buildDomArray($model->images, ',');
+                },
+                'format' => 'html'
+            ],
             'fakeUserComments',
         ],
     ]) ?>

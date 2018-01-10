@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 
 <!--    --><?//= $form->field($model, 'images')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'upload')->fileInput() ?>
+<!--    --><?//= $form->field($model, 'upload[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
 
     <?= $form->field($model, 'fakeUserComments')->textInput(['maxlength' => true]) ?>
 

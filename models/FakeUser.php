@@ -20,6 +20,9 @@ use yii\web\UploadedFile;
  */
 class FakeUser extends \yii\db\ActiveRecord
 {
+    /*
+     * @var UploadedFile[]
+     */
     public $upload;
 
     /**
@@ -37,10 +40,11 @@ class FakeUser extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'surname', 'phone', 'email', 'images', 'fakeUserComments'], 'string', 'max' => 255],
+            [['images'], 'string'],
             [['name', 'surname', 'phone'], 'required'],
             [['email'], 'email'],
             [['fullname'], 'safe'],
-            [['upload'], 'file', 'extensions' => 'png, jpg, jpeg, gif'],
+            [['upload'], 'file', 'extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 20],
             [['phone'], 'match', 'pattern' => ' /^(1[ \-\+]{0,3}|\+1[ -\+]{0,3}|\+1|\+)?((\(\+?1-[2-9][0-9]{1,2}\))|(\(\+?[2-8][0-9][0-9]\))|(\(\+?[1-9][0-9]\))|(\(\+?[17]\))|(\([2-9][2-9]\))|([ \-\.]{0,3}[0-9]{2,4}))?([ \-\.][0-9])?([ \-\.]{0,3}[0-9]{2,4}){2,3}$/'],
         ];
     }
@@ -74,16 +78,46 @@ class FakeUser extends \yii\db\ActiveRecord
         return $this->name . ' ' . $this->surname;
     }
 
+    public function getImagesArr()
+    {
+        return explode(',', $this->images);
+    }
+
+    public function setImagesArr($images)
+    {
+        $this->images = implode(',', $images);
+    }
+
     public function uploadFile()
     {
-        $this->upload = UploadedFile::getInstance($this, 'upload');
-        if ($this->upload) {
-            $filePath = 'uploads/' . $this->upload->baseName . '.' . $this->upload->extension;
-            if ($this->upload->saveAs($filePath,false)) {
-                $this->images = $filePath;
-                return true;
+        $names = [];
+        $this->upload = UploadedFile::getInstances($this, 'upload');
+        if ($this->upload && $this->validate()) {
+            foreach ($this->upload as $file) {
+                $filePath = 'uploads/' . $this->name . $this->surname . $file->baseName . rand(0, 1000) . '.' . $file->extension;
+                if ($file->saveAs($filePath, false)) {
+                    array_push($names, $filePath);
+                }
             }
+            if (empty($this->images))
+                $this->images .= implode(',', $names);
+            else {
+                $newImages = array_merge($names, $this->getImagesArr());
+                $this->setImagesArr($newImages);
+            }
+            return true;
         }
         return false;
+    }
+
+    public function deleteImages()
+    {
+        $imagesArr = $this->getImagesArr();
+        if (!empty($imagesArr)) {
+            foreach ($imagesArr as $image) {
+                if (file_exists($image))
+                    unlink($image);
+            }
+        }
     }
 }

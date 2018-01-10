@@ -15,7 +15,7 @@ class m180104_112452_fakeUser extends Migration
             'surname' => $this->string(),
             'phone' => $this->string(),
             'email' => $this->string(),
-            'images' => $this->string(),
+            'images' => $this->text(),
             'fakeUserComments' => $this->string()
         ]);
     }

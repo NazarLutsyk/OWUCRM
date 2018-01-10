@@ -18,7 +18,7 @@ $("#selectByPeriod").click(function () {
         socials: $("#sources").val()
     };
     $.ajax({
-        url: "/admin/rest/get",
+        url: "/admin/rest/get-stat-by-socials",
         method: "post",
         contentType: "application/json",
         data: JSON.stringify(params),
@@ -59,6 +59,27 @@ $("#selectByPeriod").click(function () {
                 }
             });
             window.myBar.update();
+        }
+    });
+});
+
+$("#selectAppsStat").click(function () {
+    let params = {
+        startDate:$("input[name='start']").val(),
+        endDate:$("input[name='end']").val(),
+        courses:$("#courses").val()
+    };
+    $.ajax({
+        url: "/admin/rest/get-stat-by-courses",
+        method: "post",
+        contentType: "application/json",
+        data: JSON.stringify(params),
+        success: function (res) {
+            let sum = 0;
+            for (let number of res) {
+                sum += parseInt(number.count);
+            }
+            let text = $("#appStatContainer").children().text(sum);
         }
     });
 });
