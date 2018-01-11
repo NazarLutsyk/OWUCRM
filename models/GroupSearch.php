@@ -47,6 +47,9 @@ class GroupSearch extends Group
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 20
+            ]
         ]);
 
         $dataProvider->sort->attributes['coursename'] = [

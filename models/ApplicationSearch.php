@@ -52,6 +52,9 @@ class ApplicationSearch extends Application
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 20
+            ]
         ]);
 
         $dataProvider->sort->attributes['clientname'] = [

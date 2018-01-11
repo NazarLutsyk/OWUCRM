@@ -110,7 +110,8 @@ class Client extends \yii\db\ActiveRecord
             ->select('client.id')
             ->innerJoin('application a', 'client.id=a.client_id')
             ->innerJoin("course c", 'a.course_id=c.id')
-            ->where('c.id=:cid', ['cid' => $group->course_id]);
+            ->where('c.id=:cid', ['cid' => $group->course_id])
+            ->andWhere('a.checked=0');
         $clientsInGroup = Client::find()
             ->select('client.id')
             ->innerJoin("client_group cg", 'client.id=cg.client_id')
