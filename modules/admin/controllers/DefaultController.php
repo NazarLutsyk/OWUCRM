@@ -27,7 +27,8 @@ class DefaultController extends Controller
         return $this->render('analitics',
             [
                 'socials' => ArrayHelper::map(Social::find()->all(),'id','name'),
-                'courses' => ArrayHelper::map(Course::find()->all(),'id','name')
+                'courses' => ArrayHelper::map(Course::find()->all(),'id','name'),
+                'freeCourses' => ArrayHelper::map(Course::findByPrice(0)->all(),'id','name')
             ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "client".
@@ -13,6 +14,7 @@ use Yii;
  * @property string $email
  * @property string $phone
  * @property string $city
+ * @property string $status
  * @property string $commentsAboutClient
  * @property string $tagsAboutClient
  * @property int $recomendation_id
@@ -44,6 +46,7 @@ class Client extends \yii\db\ActiveRecord
             [['recomendation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Client::className(), 'targetAttribute' => ['recomendation_id' => 'id']],
             [['email'], 'email'],
             [['fullname'], 'safe'],
+            [['status'], 'string'],
             [['phone'], 'match', 'pattern' => ' /^(1[ \-\+]{0,3}|\+1[ -\+]{0,3}|\+1|\+)?((\(\+?1-[2-9][0-9]{1,2}\))|(\(\+?[2-8][0-9][0-9]\))|(\(\+?[1-9][0-9]\))|(\(\+?[17]\))|(\([2-9][2-9]\))|([ \-\.]{0,3}[0-9]{2,4}))?([ \-\.][0-9])?([ \-\.]{0,3}[0-9]{2,4}){2,3}$/'],
         ];
     }
@@ -60,6 +63,7 @@ class Client extends \yii\db\ActiveRecord
             'email' => 'Email',
             'phone' => 'Phone',
             'city' => 'City',
+            'status' => 'Status',
             'commentsAboutClient' => 'Comments About Client',
             'tagsAboutClient' => 'Tags About Client',
             'recomendation_id' => 'Recomendation',
@@ -122,5 +126,46 @@ class Client extends \yii\db\ActiveRecord
             ->where(['in', 'id', $clientsWithApp])
             ->andWhere(['not in', 'id', $clientsInGroup]);
         return $clients;
+    }
+
+    public static function getClientStatByFreeCourses($startDate, $endDate, $courses)
+    {
+        if (!$startDate)
+            $startDate = '1970/01/01';
+        if (!$endDate)
+            $endDate = '3000/01/01';
+        if (sizeof($courses) <= 0) {
+            $freeCourses = Course::findByPrice(0)->select('id')->asArray()->all();
+            if (sizeof($freeCourses) <= 0)
+                return null;
+            $courses = ArrayHelper::getColumn($freeCourses, 'id');
+        }
+        $clientsWithFreeCoursesIds = ArrayHelper::getColumn(Client::find()
+            ->select('client.id')
+            ->innerJoin('application a', 'client.id=a.client_id')
+            ->innerJoin("course c", 'a.course_id=c.id')
+            ->where('c.price = 0')
+            ->groupBy('a.client_id')
+            ->asArray()
+            ->all(), 'id');
+        $clientsWithFreeAndOtherCoursesIds = ArrayHelper::getColumn(Client::find()
+            ->select('client.id, count(a.id) as count')
+            ->innerJoin('application a', 'client.id=a.client_id')
+            ->innerJoin("course c", 'a.course_id=c.id')
+            ->where(['in', 'client.id', $clientsWithFreeCoursesIds])
+            ->andWhere('c.price > 0')
+            ->andWhere('a.appReciveDate >=:startDate', ['startDate' => $startDate])
+            ->andWhere('a.appReciveDate <=:endDate', ['endDate' => $endDate])
+            ->groupBy('a.client_id')
+            ->asArray()
+            ->all(), 'id');
+        $stat = Client::find()
+            ->select('c.name, count(a.client_id) as count')
+            ->innerJoin('application a', 'client.id=a.client_id')
+            ->innerJoin("course c", 'a.course_id=c.id')
+            ->where(['in', 'a.course_id', $courses])
+            ->andWhere(['in', 'client.id', $clientsWithFreeAndOtherCoursesIds])
+            ->groupBy('c.name');
+        return $stat;
     }
 }

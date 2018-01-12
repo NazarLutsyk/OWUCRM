@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\models\Application;
+use app\models\Client;
 use app\models\Social;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -19,6 +20,7 @@ class RestController extends ActiveController
             'actions' => [
                 'getStatBySocials' => ['post'],
                 'getStatByCourses' => ['post'],
+                'getStatByFreeCourses' => ['post'],
             ],
         ];
 
@@ -42,6 +44,12 @@ class RestController extends ActiveController
         $endDateStr = Yii::$app->request->post('endDate');
         $courses = Yii::$app->request->post('courses');
         return Application::getAppStatByCourses($startDateStr, $endDateStr, $courses)->asArray()->all();
+    }
 
+    public function actionGetStatByFreeCourses(){
+        $startDateStr = Yii::$app->request->post('startDate');
+        $endDateStr = Yii::$app->request->post('endDate');
+        $courses = Yii::$app->request->post('courses');
+        return Client::getClientStatByFreeCourses($startDateStr, $endDateStr, $courses)->asArray()->all();
     }
 }

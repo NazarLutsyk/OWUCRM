@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             'phone',
             'city',
+            'status',
             //'commentsAboutClient',
             //'tagsAboutClient',
             //'recomendation_id',

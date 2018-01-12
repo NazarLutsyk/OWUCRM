@@ -63,4 +63,9 @@ class Course extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Group::className(), ['course_id' => 'id']);
     }
+
+    public static function findByPrice($price){
+        return Course::find()
+            ->where('price=:price',['price'=>$price]);
+    }
 }

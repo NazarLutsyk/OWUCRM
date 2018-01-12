@@ -36,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             'phone',
             'city',
+            'status',
             [
                 'attribute' => 'commentsAboutClient',
                 'value' => function ($model) {

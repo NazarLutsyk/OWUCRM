@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\filters\Cors;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -159,8 +160,11 @@ class Application extends \yii\db\ActiveRecord
             $startDate = '1970/01/01';
         if (!$endDate)
             $endDate = '3000/01/01';
-        if (sizeof($socials) <= 0)
+        if (sizeof($socials) <= 0) {
             $socials = ArrayHelper::getColumn(Social::find()->select('id')->asArray()->all(), 'id');
+            if (sizeof($socials) <= 0)
+                return null;
+        }
         return Application::find()
             ->select('s.name, count(s.id) as count')
             ->innerJoin('social s', 'application.social_id = s.id')
@@ -176,14 +180,18 @@ class Application extends \yii\db\ActiveRecord
             $startDate = '1970/01/01';
         if (!$endDate)
             $endDate = '3000/01/01';
-        if (sizeof($courses) <= 0)
+        if (sizeof($courses) <= 0) {
             $courses = ArrayHelper::getColumn(Course::find()->select('id')->asArray()->all(), 'id');
+            if (sizeof($courses) <= 0)
+                return null;
+        }
         return Application::find()
-            ->select('count(c.id) as count')
+            ->select('c.name, count(c.id) as count')
             ->innerJoin('course c', 'application.course_id = c.id')
             ->where('appReciveDate >=:startDate', ['startDate' => $startDate])
             ->andWhere('appReciveDate <=:endDate', ['endDate' => $endDate])
             ->andWhere(['in', 'c.id', $courses])
             ->groupBy('c.name');
     }
+
 }
