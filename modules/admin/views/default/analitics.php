@@ -31,8 +31,8 @@ AnaliticAsset::register($this);
     <h3>Statistic by free courses:</h3>
     <div>
         <?= Html::dropDownList('freeCourses', null, $freeCourses, ['class' => 'js-example-basic-multiple', 'multiple' => true, 'id' => 'freeCourses']) ?>
-        <input name="start2" type="date">
-        <input name="end2" type="date">
+<!--        <input name="start2" type="date">-->
+<!--        <input name="end2" type="date">-->
         <button id="selectFreeCoursesStat" class="btn btn-info btn-sm">Select</button>
         <div id="container3" style="width: 90%;">
             <canvas id="freeCoursesStat"></canvas>

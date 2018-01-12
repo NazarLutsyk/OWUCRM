@@ -47,9 +47,9 @@ class RestController extends ActiveController
     }
 
     public function actionGetStatByFreeCourses(){
-        $startDateStr = Yii::$app->request->post('startDate');
-        $endDateStr = Yii::$app->request->post('endDate');
+//        $startDateStr = Yii::$app->request->post('startDate');
+//        $endDateStr = Yii::$app->request->post('endDate');
         $courses = Yii::$app->request->post('courses');
-        return Client::getClientStatByFreeCourses($startDateStr, $endDateStr, $courses)->asArray()->all();
+        return Client::getClientStatByFreeCourses(/*$startDateStr, $endDateStr,*/ $courses)->asArray()->all();
     }
 }

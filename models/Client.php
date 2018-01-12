@@ -128,12 +128,12 @@ class Client extends \yii\db\ActiveRecord
         return $clients;
     }
 
-    public static function getClientStatByFreeCourses($startDate, $endDate, $courses)
+    public static function getClientStatByFreeCourses(/*$startDate, $endDate,*/ $courses)
     {
-        if (!$startDate)
+       /* if (!$startDate)
             $startDate = '1970/01/01';
         if (!$endDate)
-            $endDate = '3000/01/01';
+            $endDate = '3000/01/01';*/
         if (sizeof($courses) <= 0) {
             $freeCourses = Course::findByPrice(0)->select('id')->asArray()->all();
             if (sizeof($freeCourses) <= 0)
@@ -154,8 +154,6 @@ class Client extends \yii\db\ActiveRecord
             ->innerJoin("course c", 'a.course_id=c.id')
             ->where(['in', 'client.id', $clientsWithFreeCoursesIds])
             ->andWhere('c.price > 0')
-            ->andWhere('a.appReciveDate >=:startDate', ['startDate' => $startDate])
-            ->andWhere('a.appReciveDate <=:endDate', ['endDate' => $endDate])
             ->groupBy('a.client_id')
             ->asArray()
             ->all(), 'id');

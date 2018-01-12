@@ -87,8 +87,8 @@ $("#selectAppsStat").click(function () {
 
 $("#selectFreeCoursesStat").click(function () {
     let params = {
-        startDate: $("input[name='start2']").val(),
-        endDate: $("input[name='end2']").val(),
+        // startDate: $("input[name='start2']").val(),
+        // endDate: $("input[name='end2']").val(),
         courses: $("#freeCourses").val()
     };
     console.log(params);
