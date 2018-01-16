@@ -1,5 +1,6 @@
 <?php
 
+use kartik\color\ColorInput;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -13,6 +14,14 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'value')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'color')->widget(ColorInput::classname(), [
+        'options' => ['placeholder' => 'Select color ...'],
+        'pluginOptions' => [
+            'showInput' => true,
+            'preferredFormat' => 'rgb'
+        ]
+    ]); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

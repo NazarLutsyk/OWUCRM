@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $value
+ * @property string $color
  *
  * @property Application[] $applications
  */
@@ -28,7 +29,7 @@ class Status extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['value'], 'string', 'max' => 255],
+            [['value','color'], 'string', 'max' => 255],
         ];
     }
 
@@ -40,6 +41,7 @@ class Status extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'value' => 'Value',
+            'color' => 'Color',
         ];
     }
 

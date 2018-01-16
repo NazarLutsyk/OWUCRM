@@ -11,7 +11,8 @@ class m180116_111838_status extends Migration
     {
         $this->createTable('status',[
             'id' => $this->primaryKey(),
-            'value' => $this->string()
+            'value' => $this->string(),
+            'color' => $this->string()
         ]);
     }
 

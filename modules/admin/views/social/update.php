@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Social */
 
-$this->title = 'Update Social: {nameAttribute}';
+$this->title = 'Update Social: '.$model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Socials', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

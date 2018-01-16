@@ -23,6 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions' => function ($model, $key, $index, $grid) {
+            $color = $model->status->color;
+            if (!empty($color))
+                return ['style' => "background-color:${color};"];
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -30,8 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'clientfullname',
                 'label' => 'Client',
-                'value' => function($model){
-                    return Html::a($model->clientfullname,[\yii\helpers\Url::to(['/admin/client/view','id'=>$model->client_id])]);
+                'value' => function ($model) {
+                    return Html::a($model->clientfullname, [\yii\helpers\Url::to(['/admin/client/view', 'id' => $model->client_id])]);
                 },
                 'format' => 'html'
             ],
