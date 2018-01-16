@@ -34,6 +34,7 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'client_id')->dropDownList(
             $clients,
             [
+                'prompt' => 'Select client...',
                 'class' => 'js-example-basic-single',
             ]
         )->label('Client') ?>

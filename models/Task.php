@@ -43,6 +43,7 @@ class Task extends \yii\db\ActiveRecord
             [['dateExec'], 'safe'],
             [['client_id','checked'], 'integer'],
             [['value'], 'string', 'max' => 255],
+            [['client_id'],'required'],
             [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Client::className(), 'targetAttribute' => ['client_id' => 'id']],
         ];
     }

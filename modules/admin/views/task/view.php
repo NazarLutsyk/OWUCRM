@@ -35,8 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'clientname',
                 'label' => 'Client',
-                'value' => function($model){
-                    return Html::a($model->clientname,[\yii\helpers\Url::to(['/admin/client/view','id'=>$model->client_id])]);
+                'value' => function ($model) {
+                    return Html::a($model->clientname, [\yii\helpers\Url::to(['/admin/client/view', 'id' => $model->client_id])]);
                 },
                 'format' => 'html'
             ],
