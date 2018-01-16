@@ -35,8 +35,6 @@ use yii\widgets\ActiveForm;
             $clients,
             [
                 'class' => 'js-example-basic-single',
-                'name' => 'client_id',
-                'id' => 'client_id'
             ]
         )->label('Client') ?>
     <?else:?>

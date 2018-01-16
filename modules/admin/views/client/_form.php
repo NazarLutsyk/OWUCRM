@@ -26,10 +26,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'tagsAboutClient')->textarea(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'recomendation_id')->dropDownList($clients,
+    <?= $form->field($model, 'recomendation_id')->dropDownList(
+        $clients,
         [
             'prompt' => 'Select...',
-            $model->recomendation_id => ['selected' => true],
+            'class' => 'js-example-basic-single',
+            $model->recomendation_id => ['selected' => true]
         ]) ?>
 
     <div class="form-group">
