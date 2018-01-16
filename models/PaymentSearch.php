@@ -61,9 +61,10 @@ class PaymentSearch extends Payment
         $query->andFilterWhere([
             'id' => $this->id,
             'amount' => $this->amount,
-            'date' => $this->date,
             'application_id' => $this->application_id,
         ]);
+
+        $query->andFilterWhere(['like','date',$this->date]);
 
         return $dataProvider;
     }

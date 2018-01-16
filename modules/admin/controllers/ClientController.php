@@ -4,6 +4,7 @@ namespace app\modules\admin\controllers;
 
 use app\models\Application;
 use app\models\Group;
+use app\models\TaskSearch;
 use Yii;
 use app\models\Client;
 use app\models\ClientSearch;
@@ -67,10 +68,14 @@ class ClientController extends Controller
                 ->innerJoin("client",'client_group.client_id=client.id')
                 ->where("client_id=:id", array(':id' => $id))->all()
         ]);
+        $taskSearch = new TaskSearch();
+        $tasks = $taskSearch->search(['TaskSearch' => ['client_id' => $id]]);
         return $this->render('view', [
             'model' => $client,
             'applications' => $appDataProvider,
             'groups' => $groupDataProvider,
+            'tasks' => $tasks,
+
         ]);
     }
 

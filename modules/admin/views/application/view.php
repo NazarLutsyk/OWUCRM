@@ -4,6 +4,7 @@ use app\controllers\MyHelper;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Application */
@@ -14,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="application-view">
     <h1>
-        <?=Html::a($model->client->getFullname(),['/admin/client/view','id'=>$model->client_id])?>
-        <?='(' . $model->course->name . ')'?>
+        <?= Html::a($model->client->getFullname(), ['/admin/client/view', 'id' => $model->client_id]) ?>
+        <?= '(' . $model->course->name . ')' ?>
     </h1>
 
     <p>
@@ -36,16 +37,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             [
-                'attribute' => 'clientname',
-                'label' => 'Client Name'
+                'attribute' => 'clientfullname',
+                'label' => 'Client',
+                'value' => function($model){
+                    return Html::a($model->clientfullname,[\yii\helpers\Url::to(['/admin/client/view','id'=>$model->client_id])]);
+                },
+                'format' => 'html'
             ],
             [
-                'attribute' => 'clientsurname',
-                'label' => 'Client Surname'
-            ],
-            [
-                'attribute' => 'coursename',
-                'label' => 'Course'
+                'attribute' => 'statusname',
+                'label' => 'Status'
             ],
             'appReciveDate',
             'appCloseDate',
@@ -82,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <?if($payment->count > 0):?>
+    <h2>Payments</h2>
     <?= GridView::widget([
         'dataProvider' => $payment,
         'filterModel' => $searchModel,
@@ -93,5 +94,5 @@ $this->params['breadcrumbs'][] = $this->title;
             'date',
         ],
     ]); ?>
-    <?endif;?>
+
 </div>

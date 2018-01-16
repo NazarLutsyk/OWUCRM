@@ -23,10 +23,12 @@ use yii\helpers\ArrayHelper;
  * @property int $social_id
  * @property int $client_id
  * @property int $course_id
+ * @property int $status_id
  *
  * @property Client $client
  * @property Course $course
  * @property Social $social
+ * @property Status $status
  * @property Payment[] $payments
  */
 class Application extends \yii\db\ActiveRecord
@@ -66,11 +68,12 @@ class Application extends \yii\db\ActiveRecord
             [['appReciveDate', 'appCloseDate', 'client_id', 'course_id'], 'required'],
             [['discount'], 'integer', 'min' => 0, 'max' => 100],
             [['appReciveDate', 'appCloseDate'], 'safe'],
-            [['checked', 'paid', 'leftToPay', 'social_id', 'client_id', 'course_id'], 'integer'],
+            [['checked', 'paid', 'leftToPay', 'social_id', 'client_id', 'course_id','status_id'], 'integer'],
             [['commentFromClient', 'commentFromManager', 'tagsAboutApplication', 'futureCourse'], 'string', 'max' => 255],
             [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Client::className(), 'targetAttribute' => ['client_id' => 'id']],
             [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'id']],
             [['social_id'], 'exist', 'skipOnError' => true, 'targetClass' => Social::className(), 'targetAttribute' => ['social_id' => 'id']],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::className(), 'targetAttribute' => ['status_id' => 'id']],
         ];
     }
 
@@ -94,6 +97,7 @@ class Application extends \yii\db\ActiveRecord
             'social_id' => 'Social ID',
             'client_id' => 'Client ID',
             'course_id' => 'Course ID',
+            'status_id' => 'Status ID',
         ];
     }
 
@@ -124,6 +128,14 @@ class Application extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getStatus()
+    {
+        return $this->hasOne(Status::className(), ['id' => 'status_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getPayments()
     {
         return $this->hasMany(Payment::className(), ['application_id' => 'id']);
@@ -139,6 +151,10 @@ class Application extends \yii\db\ActiveRecord
         return $this->client->surname;
     }
 
+    public function getClientfullname(){
+        return $this->client->getFullname();
+    }
+
     public function getCourseName()
     {
         return $this->course->name;
@@ -152,6 +168,11 @@ class Application extends \yii\db\ActiveRecord
     public function getApplicationName()
     {
         return $this->client->getFullname() . '(' . $this->course->name . ')';
+    }
+
+    public function getStatusName()
+    {
+        return $this->status->value;
     }
 
     public static function getSocialStatisticByPeriod($startDate, $endDate, $socials)

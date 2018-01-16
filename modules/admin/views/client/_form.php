@@ -22,8 +22,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'commentsAboutClient')->textarea(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'tagsAboutClient')->textarea(['maxlength' => true]) ?>

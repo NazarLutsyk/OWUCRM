@@ -5,19 +5,19 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\ClientSearch */
+/* @var $searchModel app\models\StatusSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Clients';
+$this->title = 'Statuses';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="client-index">
+<div class="status-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Client', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Status', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -27,16 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name',
-            'surname',
-            'email:email',
-            'phone',
-            'city',
-            //'commentsAboutClient',
-            //'tagsAboutClient',
-            //'recomendation_id',
+            'value',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+
 </div>

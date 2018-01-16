@@ -1,23 +1,22 @@
 <?php
 
-use app\controllers\MyHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\FakeAccount */
+/* @var $model app\models\Task */
 
-$this->title = $model->login;
-$this->params['breadcrumbs'][] = ['label' => 'Fake Users', 'url' => ['/admin/fake-user/index']];
-$this->params['breadcrumbs'][] = ['label' => $model->fakeUser->getFullName(), 'url' => ['/admin/fake-user/view','id'=>$model->fakeUser_id]];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="fake-account-view">
+<div class="task-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Check', ['check', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -31,19 +30,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'login',
-            'password',
-            'siteUrl',
-            'registrationDate',
-            'lastVisitDate',
+            'value',
+            'dateExec',
             [
-                'attribute' => 'fakeAccountComments',
-                'value' => function ($model) {
-                    return MyHelper::buildDomArray($model->fakeAccountComments, ';');
+                'attribute' => 'clientname',
+                'label' => 'Client',
+                'value' => function($model){
+                    return Html::a($model->clientname,[\yii\helpers\Url::to(['/admin/client/view','id'=>$model->client_id])]);
                 },
                 'format' => 'html'
             ],
-            'fakeUser_id',
+            'checked',
         ],
     ]) ?>
 

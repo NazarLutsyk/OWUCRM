@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ApplicationSearch */
@@ -27,18 +28,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             [
-                'attribute' => 'clientname',
-                'label' => 'Client Name'
-            ],
-            [
-                'attribute' => 'clientsurname',
-                'label' => 'Client Surname'
+                'attribute' => 'clientfullname',
+                'label' => 'Client',
+                'value' => function($model){
+                    return Html::a($model->clientfullname,[\yii\helpers\Url::to(['/admin/client/view','id'=>$model->client_id])]);
+                },
+                'format' => 'html'
             ],
             [
                 'attribute' => 'coursename',
                 'label' => 'Course'
             ],
             'appReciveDate',
+            [
+                'attribute' => 'statusname',
+                'label' => 'Status'
+            ],
             'discount',
             'paid',
             'leftToPay',
@@ -56,4 +61,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+
 </div>

@@ -19,6 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'socials' => $socials,
         'clients' => $clients,
         'courses' => $courses,
+        'statuses' => $statuses,
+        'client_id' => $client_id
+
     ]) ?>
 
 </div>

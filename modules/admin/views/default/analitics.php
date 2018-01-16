@@ -38,4 +38,5 @@ AnaliticAsset::register($this);
             <canvas id="freeCoursesStat"></canvas>
         </div>
     </div>
+    <hr>
 </div>

@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\FakeAccount */
 
 $this->title = 'Update Fake Account: '.$model->login;
-$this->params['breadcrumbs'][] = ['label' => 'Fake Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Fake Users', 'url' => ['/admin/fake-user/index']];
 $this->params['breadcrumbs'][] = ['label' => $model->fakeUser->getFullName(), 'url' => ['/admin/fake-user/view','id'=>$model->fakeUser_id]];
 $this->params['breadcrumbs'][] = ['label' => $model->login, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

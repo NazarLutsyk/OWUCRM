@@ -7,6 +7,7 @@ use app\models\Client;
 use app\models\Course;
 use app\models\Payment;
 use app\models\Social;
+use app\models\Status;
 use Yii;
 use app\models\Application;
 use app\models\ApplicationSearch;
@@ -74,23 +75,28 @@ class ApplicationController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($client_id='')
     {
         $model = new Application();
 
         if ($model->load(Yii::$app->request->post())) {
             $model->leftToPay = MyHelper::calculatePrice($model->course->price, $model->discount);
+            if (empty($model->client_id))
+                $model->client_id = Yii::$app->request->post('client_id');
             if ($model->save())
                 return $this->redirect(['view', 'id' => $model->id]);
         }
         $socials = ArrayHelper::map(Social::find()->all(), 'id', 'name');
         $clients = ArrayHelper::map(Client::find()->all(), 'id', 'fullname');
         $courses = ArrayHelper::map(Course::find()->all(), 'id', 'name');
+        $statuses = ArrayHelper::map(Status::find()->all(), 'id', 'value');
         return $this->render('create', [
             'model' => $model,
             'socials' => $socials,
             'clients' => $clients,
             'courses' => $courses,
+            'statuses' => $statuses,
+            'client_id' => $client_id
         ]);
     }
 
@@ -111,11 +117,15 @@ class ApplicationController extends Controller
         $socials = ArrayHelper::map(Social::find()->all(), 'id', 'name');
         $clients = ArrayHelper::map(Client::find()->all(), 'id', 'fullname');
         $courses = ArrayHelper::map(Course::find()->all(), 'id', 'name');
+        $statuses = ArrayHelper::map(Status::find()->all(), 'id', 'value');
+
         return $this->render('update', [
             'model' => $model,
             'socials' => $socials,
             'clients' => $clients,
             'courses' => $courses,
+            'statuses' => $statuses,
+
         ]);
     }
 

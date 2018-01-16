@@ -5,22 +5,21 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Group;
+use app\models\Status;
 
 /**
- * GroupSearch represents the model behind the search form of `app\models\Group`.
+ * StatusSearch represents the model behind the search form of `app\models\Status`.
  */
-class GroupSearch extends Group
+class StatusSearch extends Status
 {
-   public $coursename;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'course_id'], 'integer'],
-            [['name', 'room', 'startDate','coursename'], 'safe'],
+            [['id'], 'integer'],
+            [['value'], 'safe'],
         ];
     }
 
@@ -42,20 +41,13 @@ class GroupSearch extends Group
      */
     public function search($params)
     {
-        $query = Group::find()
-        ->joinWith('course');
+        $query = Status::find();
+
+        // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => 20
-            ]
         ]);
-
-        $dataProvider->sort->attributes['coursename'] = [
-            'asc' => ['course.name' => SORT_ASC],
-            'desc' => ['course.name' => SORT_DESC],
-        ];
 
         $this->load($params);
 
@@ -68,14 +60,9 @@ class GroupSearch extends Group
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'course_id' => $this->course_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'room', $this->room])
-            ->andFilterWhere(['like', 'startDate', $this->startDate])
-            ->andFilterWhere(['like', 'course.name', $this->coursename]);
-
+        $query->andFilterWhere(['like', 'value', $this->value]);
 
         return $dataProvider;
     }

@@ -14,7 +14,6 @@ use yii\helpers\ArrayHelper;
  * @property string $email
  * @property string $phone
  * @property string $city
- * @property string $status
  * @property string $commentsAboutClient
  * @property string $tagsAboutClient
  * @property int $recomendation_id
@@ -23,6 +22,7 @@ use yii\helpers\ArrayHelper;
  * @property Client $recomendation
  * @property Client[] $clients
  * @property ClientGroup[] $clientGroups
+ * @property Task[] $tasks
  */
 class Client extends \yii\db\ActiveRecord
 {
@@ -46,7 +46,6 @@ class Client extends \yii\db\ActiveRecord
             [['recomendation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Client::className(), 'targetAttribute' => ['recomendation_id' => 'id']],
             [['email'], 'email'],
             [['fullname'], 'safe'],
-            [['status'], 'string'],
             [['phone'], 'match', 'pattern' => ' /^(1[ \-\+]{0,3}|\+1[ -\+]{0,3}|\+1|\+)?((\(\+?1-[2-9][0-9]{1,2}\))|(\(\+?[2-8][0-9][0-9]\))|(\(\+?[1-9][0-9]\))|(\(\+?[17]\))|(\([2-9][2-9]\))|([ \-\.]{0,3}[0-9]{2,4}))?([ \-\.][0-9])?([ \-\.]{0,3}[0-9]{2,4}){2,3}$/'],
         ];
     }
@@ -63,7 +62,6 @@ class Client extends \yii\db\ActiveRecord
             'email' => 'Email',
             'phone' => 'Phone',
             'city' => 'City',
-            'status' => 'Status',
             'commentsAboutClient' => 'Comments About Client',
             'tagsAboutClient' => 'Tags About Client',
             'recomendation_id' => 'Recomendation',
@@ -102,6 +100,14 @@ class Client extends \yii\db\ActiveRecord
         return $this->hasMany(ClientGroup::className(), ['client_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTasks()
+    {
+        return $this->hasMany(Task::className(), ['client_id' => 'id']);
+    }
+
     public function getFullname()
     {
         return $this->name . " " . $this->surname;
@@ -128,12 +134,13 @@ class Client extends \yii\db\ActiveRecord
         return $clients;
     }
 
-    public static function getClientStatByFreeCourses(/*$startDate, $endDate,*/ $courses)
+    public static function getClientStatByFreeCourses(/*$startDate, $endDate,*/
+        $courses)
     {
-       /* if (!$startDate)
-            $startDate = '1970/01/01';
-        if (!$endDate)
-            $endDate = '3000/01/01';*/
+        /* if (!$startDate)
+             $startDate = '1970/01/01';
+         if (!$endDate)
+             $endDate = '3000/01/01';*/
         if (sizeof($courses) <= 0) {
             $freeCourses = Course::findByPrice(0)->select('id')->asArray()->all();
             if (sizeof($freeCourses) <= 0)

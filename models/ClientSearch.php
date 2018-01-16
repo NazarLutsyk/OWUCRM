@@ -71,7 +71,6 @@ class ClientSearch extends Client
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'status', $this->status])
             ->andFilterWhere(['like', 'commentsAboutClient', $this->commentsAboutClient])
             ->andFilterWhere(['like', 'tagsAboutClient', $this->tagsAboutClient]);
 

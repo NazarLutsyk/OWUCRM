@@ -2,19 +2,19 @@
 
 namespace app\modules\admin\controllers;
 
-use app\models\FakeUser;
+use app\models\Client;
 use Yii;
-use app\models\FakeAccount;
-use app\models\FakeAccountSearch;
+use app\models\Task;
+use app\models\TaskSearch;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * FakeAccountController implements the CRUD actions for FakeAccount model.
+ * TaskController implements the CRUD actions for Task model.
  */
-class FakeAccountController extends Controller
+class TaskController extends Controller
 {
     /**
      * @inheritdoc
@@ -32,22 +32,22 @@ class FakeAccountController extends Controller
     }
 
     /**
-     * Lists all FakeAccount models.
+     * Lists all Task models.
      * @return mixed
      */
-//    public function actionIndex()
-//    {
-//        $searchModel = new FakeAccountSearch();
-//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-//
-//        return $this->render('index', [
-//            'searchModel' => $searchModel,
-//            'dataProvider' => $dataProvider,
-//        ]);
-//    }
+    public function actionIndex()
+    {
+        $searchModel = new TaskSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
     /**
-     * Displays a single FakeAccount model.
+     * Displays a single Task model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -60,27 +60,30 @@ class FakeAccountController extends Controller
     }
 
     /**
-     * Creates a new FakeAccount model.
+     * Creates a new Task model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($user_id)
+    public function actionCreate($client_id = '')
     {
-        $model = new FakeAccount();
+        $model = new Task();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if (empty($model->client_id))
+                $model->client_id = Yii::$app->request->post('client_id');
+            if ($model->save())
+                return $this->redirect(['view', 'id' => $model->id]);
         }
-        $fakeUser = FakeUser::find($user_id)->one();
+        $clients = ArrayHelper::map(Client::find()->all(), 'id', 'fullname');
         return $this->render('create', [
             'model' => $model,
-            'user_id' => $user_id,
-            'fakeUserName' => $fakeUser->fullname,
+            'client_id' => $client_id,
+            'clients' => $clients
         ]);
     }
 
     /**
-     * Updates an existing FakeAccount model.
+     * Updates an existing Task model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -93,15 +96,15 @@ class FakeAccountController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
+        $clients = ArrayHelper::map(Client::find()->all(), 'id', 'fullname');
         return $this->render('update', [
             'model' => $model,
-            'user_id' => $model
+            'clients' => $clients
         ]);
     }
 
     /**
-     * Deletes an existing FakeAccount model.
+     * Deletes an existing Task model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -109,22 +112,34 @@ class FakeAccountController extends Controller
      */
     public function actionDelete($id)
     {
-        $fakeAccount = $this->findModel($id);
-        $fakeUser_id = $fakeAccount->fakeUser_id;
-        $fakeAccount->delete();
-        return $this->redirect(['/admin/fake-user/view','id'=>$fakeUser_id]);
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    public function actionCheck($id)
+    {
+        $task = $this->findModel($id);
+//        $app->checked = !$app->checked;
+        if ($task->checked) {
+            $task->checked = 0;
+        } else {
+            $task->checked = 1;
+        }
+        $task->save();
+        return $this->redirect(['view', "id" => $id]);
     }
 
     /**
-     * Finds the FakeAccount model based on its primary key value.
+     * Finds the Task model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return FakeAccount the loaded model
+     * @return Task the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = FakeAccount::findOne($id)) !== null) {
+        if (($model = Task::findOne($id)) !== null) {
             return $model;
         }
 

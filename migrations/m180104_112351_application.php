@@ -23,7 +23,8 @@ class m180104_112351_application extends Migration
             'leftToPay'=>$this->integer(),
             'social_id'=>$this->integer(),
             'client_id'=>$this->integer(),
-            'course_id'=>$this->integer()
+            'course_id'=>$this->integer(),
+            'status_id'=>$this->integer(),
         ]);
     }
 

@@ -16,7 +16,6 @@ class m180104_112339_client extends Migration
             'email' => $this->string(),
             'phone' => $this->string(),
             'city' => $this->string(),
-            'status' => $this->string(),
             'commentsAboutClient' => $this->string(),
             'tagsAboutClient' => $this->string(),
             'recomendation_id' => $this->integer(),

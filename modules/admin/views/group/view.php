@@ -3,6 +3,7 @@
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Group */
@@ -38,37 +39,37 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <?php if ($clients->count > 0): ?>
-        <?= GridView::widget([
-            'dataProvider' => $clients,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
+    <h2>Clients</h2>
+    <?= GridView::widget([
+        'dataProvider' => $clients,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
 
-                'id',
-                'name',
-                'surname',
-                'email:email',
-                'phone',
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}{myButton}',
-                    'buttons' => [
-                        'myButton' => function ($url, $client, $key) use ($model) {
-                            return Html::a("DELETE",
-                                \yii\helpers\Url::to(['/admin/group/expel', 'client_id' => $client->id, 'group_id' => $model->id]),
-                                ['class' => 'btn btn-danger btn-xs']);
-                        },
-                        'view' => function ($url, $model) {
-                            $url = \yii\helpers\Url::toRoute(['/admin/client/view', 'id' => $model->id]);
-                            return Html::a('SHOW', $url,
-                                [
-                                    'title' => Yii::t('yii', 'Create'),
-                                    'class' => 'btn btn-primary btn-xs'
-                                ]);
-                        },
-                    ]
-                ],
+            'id',
+            'name',
+            'surname',
+            'email:email',
+            'phone',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}{myButton}',
+                'buttons' => [
+                    'myButton' => function ($url, $client, $key) use ($model) {
+                        return Html::a("DELETE",
+                            \yii\helpers\Url::to(['/admin/group/expel', 'client_id' => $client->id, 'group_id' => $model->id]),
+                            ['class' => 'btn btn-danger btn-xs']);
+                    },
+                    'view' => function ($url, $model) {
+                        $url = \yii\helpers\Url::toRoute(['/admin/client/view', 'id' => $model->id]);
+                        return Html::a('SHOW', $url,
+                            [
+                                'title' => Yii::t('yii', 'Create'),
+                                'class' => 'btn btn-primary btn-xs'
+                            ]);
+                    },
+                ]
             ],
-        ]); ?>
-    <?php endif; ?>
+        ],
+    ]); ?>
+
 </div>

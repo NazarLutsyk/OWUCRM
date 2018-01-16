@@ -13,19 +13,25 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'client_id')->dropDownList($clients,
-        [
-            'prompt' => 'Select client...',
-            $model->client_id => ['selected' => true],
-            'class' => 'js-example-basic-single'
-        ])->label('Client')?>
+    <? if (empty($client_id)): ?>
+        <?= $form->field($model, 'client_id')->dropDownList($clients,
+            [
+                'prompt' => 'Select client...',
+                $model->client_id => ['selected' => true],
+                'class' => 'js-example-basic-single'
+            ])->label('Client') ?>
+    <? else: ?>
+        <div style="display: none">
+            <?= $form->field($model, 'client_id')->hiddenInput(['value' => $client_id])->label('') ?>
+        </div>
+    <? endif ?>
 
     <?= $form->field($model, 'course_id')->dropDownList($courses,
         [
             'prompt' => 'Select course...',
             $model->course_id => ['selected' => true],
             'class' => 'js-example-basic-single'
-        ])->label('Course')?>
+        ])->label('Course') ?>
 
     <?= $form->field($model, 'appReciveDate')->input("datetime")->widget(
         "kartik\datetime\DateTimePicker",
@@ -37,10 +43,10 @@ use yii\widgets\ActiveForm;
             'pluginOptions' => [
                 'format' => 'yyyy-MM-dd HH:mm',
                 'todayHighlight' => true,
-                'autoclose'=>true,
+                'autoclose' => true,
             ]
         ]
-    )?>
+    ) ?>
 
     <?= $form->field($model, 'appCloseDate')->input("datetime")->widget(
         "kartik\datetime\DateTimePicker",
@@ -52,7 +58,7 @@ use yii\widgets\ActiveForm;
             'pluginOptions' => [
                 'format' => 'yyyy-MM-dd HH:mm',
                 'todayHighlight' => true,
-                'autoclose'=>true,
+                'autoclose' => true,
             ]
         ]
     ) ?>
@@ -72,7 +78,14 @@ use yii\widgets\ActiveForm;
             'prompt' => 'Select social...',
             $model->social_id => ['selected' => true],
             'class' => 'js-example-basic-single'
-        ])->label('Social')?>
+        ])->label('Social') ?>
+
+    <?= $form->field($model, 'status_id')->dropDownList($statuses,
+        [
+            'prompt' => 'Select status...',
+            $model->status_id => ['selected' => true],
+            'class' => 'js-example-basic-single'
+        ])->label('Status') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

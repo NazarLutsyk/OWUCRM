@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m180104_112506_relations
+ * Class m180116_112811_relation
  */
-class m180104_112506_relations extends Migration
+class m180116_112811_relation extends Migration
 {
     public function up()
     {
@@ -43,6 +43,16 @@ class m180104_112506_relations extends Migration
             'fakeAcc_fakeUser_id_index',
             'fakeAccount',
             'fakeUser_id'
+        );
+        $this->createIndex(
+            'app_status_id_index',
+            'application',
+            'status_id'
+        );
+        $this->createIndex(
+            'task_client_id_index',
+            'task',
+            'client_id'
         );
 
         $this->addForeignKey(
@@ -82,6 +92,15 @@ class m180104_112506_relations extends Migration
         );
 
         $this->addForeignKey(
+            'fk-app-status',
+            'application',
+            'status_id',
+            'status',
+            'id',
+            'SET NULL'
+        );
+
+        $this->addForeignKey(
             'fk-group-course',
             'group',
             'course_id',
@@ -104,6 +123,14 @@ class m180104_112506_relations extends Migration
             'fakeAccount',
             'fakeUser_id',
             'fakeUser',
+            'id',
+            'CASCADE'
+        );
+        $this->addForeignKey(
+            'fk-task-client',
+            'task',
+            'client_id',
+            'client',
             'id',
             'CASCADE'
         );
@@ -151,8 +178,10 @@ class m180104_112506_relations extends Migration
         $this->dropIndex("app_social_id_index", "application");
         $this->dropIndex("app_client_id_index", "application");
         $this->dropIndex("app_course_id_index", "application");
+        $this->dropIndex("app_status_id_index", "application");
         $this->dropIndex("grp_course_id_index", "group");
         $this->dropIndex("pmt_course_id_index", "payment");
+        $this->dropIndex("task_client_id_index", "task");
         $this->dropIndex("fakeAcc_fakeUser_id_index", "fakeAccount");
         $this->dropIndex("client_group_client_id_index", "client_group");
         $this->dropIndex("client_group_group_id_index", "client_group");
@@ -161,8 +190,10 @@ class m180104_112506_relations extends Migration
         $this->dropForeignKey("fk-app-social", "application");
         $this->dropForeignKey("fk-app-client", "application");
         $this->dropForeignKey("fk-app-course", "application");
+        $this->dropForeignKey("fk-app-status", "application");
         $this->dropForeignKey("fk-group-course", "group");
         $this->dropForeignKey("fk-payment-app", "payment");
+        $this->dropForeignKey("fk-task-client", "task");
         $this->dropForeignKey("fk-fakeAcc-fakeUser", "fakeAccount");
         $this->dropForeignKey("fk-client-group", "client_group");
         $this->dropForeignKey("fk-group-client", "client_group");
@@ -171,3 +202,5 @@ class m180104_112506_relations extends Migration
 
     }
 }
+
+

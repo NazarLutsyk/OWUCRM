@@ -60,14 +60,14 @@ class FakeAccountSearch extends FakeAccount
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'registrationDate' => $this->registrationDate,
-            'lastVisitDate' => $this->lastVisitDate,
             'fakeUser_id' => $this->fakeUser_id,
         ]);
 
         $query->andFilterWhere(['like', 'login', $this->login])
             ->andFilterWhere(['like', 'password', $this->password])
             ->andFilterWhere(['like', 'siteUrl', $this->siteUrl])
+            ->andFilterWhere(['like', 'lastVisitDate', $this->lastVisitDate])
+            ->andFilterWhere(['like', 'registrationDate', $this->registrationDate])
             ->andFilterWhere(['like', 'fakeAccountComments', $this->fakeAccountComments]);
 
         return $dataProvider;

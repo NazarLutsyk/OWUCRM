@@ -4,11 +4,12 @@ use app\controllers\MyHelper;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\FakeUser */
 
-$this->title = $model->name;
+$this->title = $model->getFullName();
 $this->params['breadcrumbs'][] = ['label' => 'Fake Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -37,7 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
         <div>
             <h1><?= Html::encode($this->title) ?></h1>
-
             <p>
                 <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a('Create account', ['/admin/fake-account/create', 'user_id' => $model->id], ['class' => 'btn btn-success']); ?>
@@ -71,7 +71,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <?php if ($fakeaccs->count > 0): ?>
         <?= GridView::widget([
             'dataProvider' => $fakeaccs,
             'filterModel' => $searchModel,
@@ -116,6 +115,5 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
         ]); ?>
-    <?php endif; ?>
 
 </div>
