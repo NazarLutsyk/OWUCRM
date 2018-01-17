@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-use yii\filters\Cors;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -45,6 +43,13 @@ class Application extends \yii\db\ActiveRecord
                 $this->paid = 0;
             if (empty($this->checked))
                 $this->checked = 0;
+            if (empty($this->appReciveDate)){
+                $dateTime = new \DateTime('now', new \DateTimeZone('Europe/Kiev'));
+                $dateTime->format('Y/m/d H:i');
+                $dateTime->sub(new \DateInterval('PT1H'));
+                $this->appReciveDate = date('Y/m/d H:i',$dateTime->getTimestamp());
+
+            }
             return true;
         }
         return false;
@@ -65,7 +70,7 @@ class Application extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['appReciveDate', 'appCloseDate', 'client_id', 'course_id'], 'required'],
+            [[/*'appReciveDate',*/ 'appCloseDate', 'client_id', 'course_id'], 'required'],
             [['discount'], 'integer', 'min' => 0, 'max' => 100],
             [['appReciveDate', 'appCloseDate'], 'safe'],
             [['checked', 'paid', 'leftToPay', 'social_id', 'client_id', 'course_id','status_id'], 'integer'],

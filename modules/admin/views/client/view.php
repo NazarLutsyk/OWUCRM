@@ -68,6 +68,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h2>Applications</h2>
     <?= GridView::widget([
         'dataProvider' => $applications,
+        'rowOptions' => function ($model, $key, $index, $grid) {
+            $color = $model->status->color;
+            if (!empty($color))
+                return ['style' => "background-color:${color};"];
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'id',

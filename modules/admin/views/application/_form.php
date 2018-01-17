@@ -33,20 +33,20 @@ use yii\widgets\ActiveForm;
             'class' => 'js-example-basic-single'
         ])->label('Course') ?>
 
-    <?= $form->field($model, 'appReciveDate')->input("datetime")->widget(
-        "kartik\datetime\DateTimePicker",
-        [
-            'name' => 'appReciveDate',
-            'options' => ['placeholder' => 'Select recive date ...'],
-            'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
-            'convertFormat' => true,
-            'pluginOptions' => [
-                'format' => 'yyyy-MM-dd HH:mm',
-                'todayHighlight' => true,
-                'autoclose' => true,
-            ]
-        ]
-    ) ?>
+<!--    --><?//= $form->field($model, 'appReciveDate')->input("datetime")->widget(
+//        "kartik\datetime\DateTimePicker",
+//        [
+//            'name' => 'appReciveDate',
+//            'options' => ['placeholder' => 'Select recive date ...'],
+//            'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
+//            'convertFormat' => true,
+//            'pluginOptions' => [
+//                'format' => 'yyyy-MM-dd HH:mm',
+//                'todayHighlight' => true,
+//                'autoclose' => true,
+//            ]
+//        ]
+//    ) ?>
 
     <?= $form->field($model, 'appCloseDate')->input("datetime")->widget(
         "kartik\datetime\DateTimePicker",
