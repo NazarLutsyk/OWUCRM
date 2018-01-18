@@ -90,19 +90,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{view}{update}{delete}',
                     'buttons' => [
                         'view' => function ($url, $model) {
-                            $url = \yii\helpers\Url::toRoute(['/admin/fake-account/view', 'id' => $model->fakeUser_id]);
+                            $url = \yii\helpers\Url::toRoute(['/admin/fake-account/view', 'id' => $model->id]);
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
                                 'title' => Yii::t('yii', 'Create'),
                             ]);
                         },
                         'update' => function ($url, $model) {
-                            $url = \yii\helpers\Url::toRoute(['/admin/fake-account/update', 'id' => $model->fakeUser_id]);
+                            $url = \yii\helpers\Url::toRoute(['/admin/fake-account/update', 'id' => $model->id]);
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
                                 'title' => Yii::t('yii', 'Update'),
                             ]);
                         },
                         'delete' => function ($url, $model) {
-                            $url = \yii\helpers\Url::toRoute(['/admin/fake-account/delete', 'id' => $model->fakeUser_id]);
+                            $url = \yii\helpers\Url::toRoute(['/admin/fake-account/delete', 'id' => $model->id]);
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
                                 'title' => Yii::t('yii', 'Delete'),
                                 'data' => [

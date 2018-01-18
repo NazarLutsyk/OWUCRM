@@ -9,7 +9,7 @@ $config = [
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'modules' => [
         'admin' => [
@@ -22,7 +22,8 @@ $config = [
             'cookieValidationKey' => 'EikPH1uzzk1xi0c2mtGVJmN55on74N0x',
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
-            ]
+            ],
+            'baseUrl' => '',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
