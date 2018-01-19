@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "client".
@@ -26,6 +27,29 @@ use yii\helpers\ArrayHelper;
  */
 class Client extends \yii\db\ActiveRecord
 {
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            Yii::info('Client created: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        } else {
+            Yii::info('Client updated: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function afterDelete()
+    {
+        Yii::info('Client deleted: ' . Json::encode($this) .
+            'Admin:' . Json::encode(Yii::$app->user->identity),
+            'my_info_log');
+        parent::afterDelete();
+    }
+
     /**
      * @inheritdoc
      */

@@ -10,6 +10,7 @@ use app\models\Group;
 use app\models\GroupSearch;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -138,12 +139,16 @@ class GroupController extends Controller
         } elseif (Yii::$app->request->isPost) {
             $groupId = Yii::$app->request->post('id');
             $clientIds = Yii::$app->request->post('clients');
-
             foreach ($clientIds as $index => $clientId) {
                 $relation = new ClientGroup();
                 $relation->client_id = $clientId;
                 $relation->group_id = $groupId;
-                $relation->save();
+                if ($relation->save()) {
+                    Yii::info('Client : ' . Json::encode(Client::findOne($clientId)) .
+                        'Added to group:' . Json::encode(Group::findOne($groupId)).
+                        'Admin:' . Json::encode(Yii::$app->user->identity),
+                        'my_info_log');
+                }
             }
 
             return $this->redirect(["view",
@@ -153,8 +158,13 @@ class GroupController extends Controller
     }
 
     public function actionExpel($client_id,$group_id){
-        ClientGroup::deleteAll('client_id=:clid and group_id=:grpid',
-            [':clid'=>$client_id,':grpid'=>$group_id]);
+        if (ClientGroup::deleteAll('client_id=:clid and group_id=:grpid',
+            [':clid'=>$client_id,':grpid'=>$group_id])) {
+            Yii::info('Client : ' . Json::encode(Client::findOne($client_id)) .
+                'Deleted from group:' . Json::encode(Group::findOne($group_id)).
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        }
         return $this->redirect(Url::to(['/admin/group/view','id'=>$group_id]));
     }
 

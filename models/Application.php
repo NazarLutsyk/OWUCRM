@@ -2,7 +2,9 @@
 
 namespace app\models;
 
+use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "application".
@@ -31,6 +33,28 @@ use yii\helpers\ArrayHelper;
  */
 class Application extends \yii\db\ActiveRecord
 {
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            Yii::info('Application created: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        } else {
+            Yii::info('Application updated: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function afterDelete()
+    {
+        Yii::info('Application deleted: ' . Json::encode($this) .
+            'Admin:' . Json::encode(Yii::$app->user->identity),
+            'my_info_log');
+        parent::afterDelete();
+    }
 
     public function beforeSave($insert)
     {

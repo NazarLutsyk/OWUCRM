@@ -8,6 +8,7 @@ use app\models\FakeUser;
 use app\models\FakeUserSearch;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -151,6 +152,11 @@ class FakeUserController extends Controller
         $fileName = Yii::$app->request->post('image');
         $fakeUser = $this->findModel($id);
         if (unlink($fileName)){
+            Yii::info(
+                'Deleted image: '.$fileName.
+                'From fake user: '.Json::encode($fakeUser).
+                'Admin:'.Json::encode(Yii::$app->user->identity),
+                'my_info_log');
             $fakeUser->setImagesArr(array_diff($fakeUser->getImagesArr(),[$fileName]));
             $fakeUser->save(false);
         }

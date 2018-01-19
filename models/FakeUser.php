@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Json;
 use yii\web\UploadedFile;
 
 /**
@@ -20,6 +21,29 @@ use yii\web\UploadedFile;
  */
 class FakeUser extends \yii\db\ActiveRecord
 {
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            Yii::info('Fake user: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        } else {
+            Yii::info('Fake user: ' . Json::encode($this) .
+                'Admin:' . Json::encode(Yii::$app->user->identity),
+                'my_info_log');
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function afterDelete()
+    {
+        Yii::info('Fake user: ' . Json::encode($this) .
+            'Admin:' . Json::encode(Yii::$app->user->identity),
+            'my_info_log');
+        parent::afterDelete();
+    }
+
     /*
      * @var UploadedFile[]
      */
@@ -105,6 +129,11 @@ class FakeUser extends \yii\db\ActiveRecord
                 $newImages = array_merge($names, $this->getImagesArr());
                 $this->setImagesArr($newImages);
             }
+            Yii::info(
+                'Uploaded images: '.Json::encode($names).
+                'To fake user: '.Json::encode($this).
+                'Admin:'.Json::encode(Yii::$app->user->identity),
+                'my_info_log');
             return true;
         }
         return false;
@@ -119,5 +148,10 @@ class FakeUser extends \yii\db\ActiveRecord
                     unlink($image);
             }
         }
+        Yii::info(
+            'Deleted images: '.Json::encode($imagesArr).
+                    'From fake user: '.Json::encode($this).
+                    'Admin:'.Json::encode(Yii::$app->user->identity),
+            'my_info_log');
     }
 }

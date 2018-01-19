@@ -15,6 +15,30 @@ $config = [
         'admin' => [
             'class' => 'app\modules\admin\Module',
         ],
+        'rbac' => [
+            'class' => 'mdm\admin\Module',
+            'controllerMap' => [
+                'assignment' => [
+                    'class' => 'mdm\admin\controllers\AssignmentController',
+                    /*'userClassName' => 'app\models\User',*/
+                    'idField' => 'id',
+                    'usernameField' => 'username',
+                ],
+            ],
+            'layout' => 'left-menu',
+            'mainLayout' => '@app/views/layouts/main.php',
+        ]
+    ],
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            'site/*',
+//            'admin/*',
+//            'rbac/*',
+            'rbac/user/login',
+            'rbac/user/logout',
+//            'rbac/user/signup',
+        ]
     ],
     'components' => [
         'request' => [
@@ -29,8 +53,12 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'mdm\admin\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['rbac/user/login'],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -48,7 +76,17 @@ $config = [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
+                    'logVars' => [],
+                    'maxLogFiles' => 20
                 ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'categories' => ['my_info_log'],
+                    'levels' => ['info'],
+                    'logFile' => '@runtime/logs/info.log',
+                    'logVars' => ['$_GET', '$_POST'],
+                    'maxLogFiles' => 30
+                ]
             ],
         ],
         'db' => $db,

@@ -8,19 +8,6 @@ use Yii;
  */
 class Module extends \yii\base\Module
 {
-    public function beforeAction($action){
-
-        if (!parent::beforeAction($action)) {
-            return false;
-        }
-
-        if (!Yii::$app->user->isGuest){
-            return true;
-        } else {
-            Yii::$app->getResponse()->redirect(Yii::$app->getHomeUrl());
-            return false;
-        }
-    }
     /**
      * @inheritdoc
      */

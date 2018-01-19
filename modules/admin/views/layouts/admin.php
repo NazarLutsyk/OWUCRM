@@ -49,19 +49,21 @@ AppAsset::register($this);
             ['label' => 'FakeUsers', 'url' => ['/admin/fake-user/index']],
             ['label' => 'Analitic', 'url' => ['/admin/default/analitics']],
 //            ['label' => 'FakeAccounts', 'url' => ['/admin/fake-account/index']],
-            Yii::$app->user->isGuest ? (
-            ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
+                Yii::$app->user->isGuest ? '' :
+                    ['label' => 'Manage', 'url' => ['/admin/']],
+                Yii::$app->user->isGuest ? (
+                ['label' => 'Login', 'url' => ['/rbac/user/login']]
+                ) : (
+                    '<li>'
+                    . Html::beginForm(['/rbac/user/logout'], 'post')
+                    . Html::submitButton(
+                        'Logout (' . Yii::$app->user->identity->username . ')',
+                        ['class' => 'btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>'
                 )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
+            ],
     ]);
     NavBar::end();
     ?>
