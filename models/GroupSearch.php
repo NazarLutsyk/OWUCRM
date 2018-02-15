@@ -71,7 +71,7 @@ class GroupSearch extends Group
             'course_id' => $this->course_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
+        $query->andFilterWhere(['like', 'group.name', $this->name])
             ->andFilterWhere(['like', 'room', $this->room])
             ->andFilterWhere(['like', 'startDate', $this->startDate])
             ->andFilterWhere(['like', 'course.name', $this->coursename]);

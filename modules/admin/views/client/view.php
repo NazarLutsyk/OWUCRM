@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Add application', ['/admin/application/create', 'client_id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Add to group', ['add', 'client_id' => $model->id], ['class' => 'btn btn-warning']) ?>
         <?= Html::a('Add task', ['/admin/task/create', 'client_id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',

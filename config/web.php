@@ -33,11 +33,12 @@ $config = [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
             'site/*',
-//            'admin/*',
-//            'rbac/*',
+            'gii/*',
+            'admin/*',
+            'rbac/*',
             'rbac/user/login',
             'rbac/user/logout',
-//            'rbac/user/signup',
+            'rbac/user/signup',
         ]
     ],
     'components' => [

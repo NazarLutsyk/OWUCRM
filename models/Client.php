@@ -158,8 +158,7 @@ class Client extends \yii\db\ActiveRecord
         return $clients;
     }
 
-    public static function getClientStatByFreeCourses($startDate, $endDate,
-        $courses)
+    public static function getClientStatByFreeCourses($startDate, $endDate, $courses)
     {
          if (empty($startDate))
              $startDate = '1970/01/01';

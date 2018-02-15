@@ -103,4 +103,31 @@ class Group extends \yii\db\ActiveRecord
     }
 
 
+    public static function findGroupsToClient($clientId)
+    {
+        $client = Client::find()->where('id=:id', ['id' => $clientId])->one();
+
+        $clientApplications = Application::find()
+            ->select('c.id')
+            ->innerJoin('course c', 'application.course_id = c.id')
+            ->where('client_id=:cid', ['cid' => $client->id])
+            ->andWhere('checked=0');
+
+
+        $groupsWithThisClient = Group::find()
+            ->select('group.id')
+            ->innerJoin("client_group cg", 'group.id=cg.group_id')
+            ->innerJoin("client c", 'c.id=cg.client_id')
+            ->where('c.id=:id',['id'=>$client->id]);
+
+        $groups = Group::find()
+            ->select('id,name')
+            ->where(['in', 'course_id', $clientApplications])
+            ->andWhere(['not in', 'id', $groupsWithThisClient]);
+
+        return $groups;
+
+
+    }
+
 }

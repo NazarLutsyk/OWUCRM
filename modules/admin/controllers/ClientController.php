@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\models\Application;
+use app\models\ClientGroup;
 use app\models\Group;
 use app\models\TaskSearch;
 use Yii;
@@ -11,6 +12,7 @@ use app\models\ClientSearch;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,8 +66,8 @@ class ClientController extends Controller
         ]);
         $groupDataProvider = new ArrayDataProvider([
             'allModels' => Group::find()
-                ->innerJoin("client_group",'group.id=client_group.group_id')
-                ->innerJoin("client",'client_group.client_id=client.id')
+                ->innerJoin("client_group", 'group.id=client_group.group_id')
+                ->innerJoin("client", 'client_group.client_id=client.id')
                 ->where("client_id=:id", array(':id' => $id))->all()
         ]);
         $taskSearch = new TaskSearch();
@@ -91,7 +93,7 @@ class ClientController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-        $clients = ArrayHelper::map(Client::find()->all(),'id','fullname');
+        $clients = ArrayHelper::map(Client::find()->all(), 'id', 'fullname');
 
         return $this->render('create', [
             'model' => $model,
@@ -113,7 +115,7 @@ class ClientController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-        $clients = ArrayHelper::map(Client::find()->all(),'id','fullname');
+        $clients = ArrayHelper::map(Client::find()->all(), 'id', 'fullname');
 
         return $this->render('update', [
             'model' => $model,
@@ -134,6 +136,40 @@ class ClientController extends Controller
 
         return $this->redirect(['index']);
     }
+
+    public function actionAdd()
+    {
+        if (Yii::$app->request->isGet) {
+            $groupRecords = Group::findGroupsToClient(Yii::$app->request->get('client_id'))->all();
+            $groups = ArrayHelper::map($groupRecords, 'id', 'name');
+
+            $model = Client::find()->where('id=:id', ['id' => Yii::$app->request->get('client_id')])->one();
+
+            return $this->render("addGroups", [
+                'model' => $model,
+                'groups' => $groups
+            ]);
+        } elseif (Yii::$app->request->isPost) {
+            $clientId = Yii::$app->request->post('id');
+            $groupIds = Yii::$app->request->post('groups');
+            foreach ($groupIds as $index => $groupId) {
+                $relation = new ClientGroup();
+                $relation->client_id = $clientId;
+                $relation->group_id = $groupId;
+                if ($relation->save()) {
+                    Yii::info('Client : ' . Json::encode(Client::findOne($clientId)) .
+                        'Added to group:' . Json::encode(Group::findOne($clientId)) .
+                        'Admin:' . Json::encode(Yii::$app->user->identity),
+                        'my_info_log');
+                }
+            }
+
+            return $this->redirect(["view",
+                'id' => $clientId
+            ]);
+        }
+    }
+
 
     /**
      * Finds the Client model based on its primary key value.
